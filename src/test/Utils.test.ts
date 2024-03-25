@@ -1,7 +1,7 @@
 import { StringUtils, getStringInfo, toUpperCase } from "../app/Utils";
 
 describe("Utils test suite", () => {
-  describe.only("StringUtils tests", () => {
+  describe("StringUtils tests", () => {
     let sut: StringUtils;
 
     beforeEach(() => {
@@ -27,12 +27,14 @@ describe("Utils test suite", () => {
       }).toThrowError("Invalid argument!");
     });
 
-    it("Should throw error on invalid argument - try catch block", () => {
+    it("Should throw error on invalid argument - try catch block", (done) => {
       try {
         sut.toUpperCase("");
+        done("GetStringInfo should throw error for invalid arg!");
       } catch (error) {
         expect(error).toBeInstanceOf(Error);
         expect(error).toHaveProperty("message", "Invalid argument!");
+        done();
       }
     });
   });
@@ -46,7 +48,7 @@ describe("Utils test suite", () => {
     expect(actual).toBe(expected);
   });
 
-  describe.only("ToUpperCase example", () => {
+  describe("ToUpperCase example", () => {
     it.each([
       { input: "abc", expected: "ABC" },
       { input: "My-String", expected: "MY-STRING" },
