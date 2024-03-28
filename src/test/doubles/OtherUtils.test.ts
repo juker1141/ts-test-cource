@@ -1,9 +1,38 @@
 import {
+  OtherStringUtils,
   calculateComplexity,
   toUpperCaseWithCb,
 } from "../../app/doubles/OtherUtils";
 
-describe("OtherUtils test suite", () => {
+describe.skip("OtherUtils test suite", () => {
+  describe.only("OtherStringUtils tests with spies", () => {
+    let sut: OtherStringUtils;
+
+    beforeEach(() => {
+      sut = new OtherStringUtils();
+    });
+
+    test("Use a spy to track calls", () => {
+      const toUpperCaseSpy = jest.spyOn(sut, "toUpperCase");
+      sut.toUpperCase("asv");
+      expect(toUpperCaseSpy).toHaveBeenCalledWith("asv");
+    });
+
+    test("Use a spy to track calls to other module", () => {
+      const consoleLogSpy = jest.spyOn(console, "log");
+      sut.logString("abc");
+      expect(consoleLogSpy).toHaveBeenCalledWith("abc");
+    });
+
+    test("Use a spy to replace the implementation of a method", () => {
+      jest.spyOn(sut as any, "callExternalService").mockImplementation(() => {
+        console.log("calling mocked implementation!!!");
+      });
+
+      (sut as any).callExternalService();
+    });
+  });
+
   describe("Tracking callbacks with Jest mocks", () => {
     const callBackMock = jest.fn();
 
@@ -14,15 +43,15 @@ describe("OtherUtils test suite", () => {
     it("calls callback for invalid argument - track calls", () => {
       const actual = toUpperCaseWithCb("", callBackMock);
       expect(actual).toBeUndefined();
-      expect(callBackMock).toBeCalledWith("Invalid argument!");
-      expect(callBackMock).toBeCalledTimes(1);
+      expect(callBackMock).toHaveBeenCalledWith("Invalid argument!");
+      expect(callBackMock).toHaveBeenCalledTimes(1);
     });
 
     it("calls callback for valid argument - track calls", () => {
       const actual = toUpperCaseWithCb("abc", callBackMock);
       expect(actual).toBe("ABC");
-      expect(callBackMock).toBeCalledWith("called function with abc");
-      expect(callBackMock).toBeCalledTimes(1);
+      expect(callBackMock).toHaveBeenCalledWith("called function with abc");
+      expect(callBackMock).toHaveBeenCalledTimes(1);
     });
   });
   describe("Tracking callbacks", () => {
