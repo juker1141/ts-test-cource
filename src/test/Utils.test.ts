@@ -17,14 +17,13 @@ describe("Utils test suite", () => {
       function expectError() {
         const actual = sut.toUpperCase("");
       }
-      expect(expectError).toThrow();
-      expect(expectError).toThrowError("Invalid argument!");
+      expect(expectError).toThrow("Invalid argument!");
     });
 
     it("Should throw error on invalid argument - arrow function", () => {
       expect(() => {
         const actual = sut.toUpperCase("");
-      }).toThrowError("Invalid argument!");
+      }).toThrow("Invalid argument!");
     });
 
     it("Should throw error on invalid argument - try catch block", (done) => {
